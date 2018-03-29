@@ -38,7 +38,12 @@ func getTitle(commit string) string {
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "Upstream-commit:") {
 			title := strings.TrimSpace(lines[n-1])
-			return strings.ToUpper(title[0:1]) + title[1:]
+			title = strings.ToUpper(title[0:1]) + title[1:]
+			//Add a period at the end of title
+			if string(title[len(title)-1]) != "." {
+				title += "."
+			}
+			return title
 		}
 	}
 	return ""
@@ -162,7 +167,7 @@ func main() {
 		}
 
 		if repo, ok := repos[component]; ok {
-			changes[section] = append(changes[section], fmt.Sprintf("%s %s. [%s#%d](https://github.com/%s/pull/%d)", dot, title, repo, number, repo, number))
+			changes[section] = append(changes[section], fmt.Sprintf("%s %s [%s#%d](https://github.com/%s/pull/%d)", dot, title, repo, number, repo, number))
 		}
 
 	}
